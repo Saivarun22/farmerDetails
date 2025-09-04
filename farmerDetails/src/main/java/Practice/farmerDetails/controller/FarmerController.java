@@ -5,11 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
+import Practice.farmerDetails.dto.FarmerDTO;
 import Practice.farmerDetails.model.Farmer;
 import Practice.farmerDetails.service.FarmerService;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -46,13 +49,13 @@ public class FarmerController {
     }
 
     @PostMapping
-    public ResponseEntity<Farmer> createFarmer(@RequestBody Farmer farmer){
-        Farmer SavedFramer = farmerService.createFarmer(farmer);
+    public ResponseEntity<Farmer> createFarmer( @Valid @RequestBody FarmerDTO dto ){
+        Farmer SavedFramer = farmerService.createFarmer(dto);
         return ResponseEntity.ok(SavedFramer);
     }
 
     @PutMapping("/{IEID}")
-    public ResponseEntity<Farmer> updateFarmer(@PathVariable Long IEID , @RequestBody Farmer farmer){
+    public ResponseEntity<Farmer> updateFarmer(@PathVariable Long IEID ,@Valid @RequestBody Farmer farmer){
        Farmer updatedFarmer = farmerService.updateFarmer(IEID, farmer);
        if(updatedFarmer != null){
         return ResponseEntity.ok(updatedFarmer);
@@ -77,7 +80,21 @@ public class FarmerController {
         
     }
 
+    @PatchMapping("/{IEID}")
+    public ResponseEntity<FarmerDTO> patchFarmer(@PathVariable Long IEID, @Valid @RequestBody FarmerDTO farmerDTO){
+        FarmerDTO updateFarmer = farmerService.patchFarmer(IEID,farmerDTO);
+        if(updateFarmer != null){
+            return ResponseEntity.ok(updateFarmer);
+        }
+        else{
+            return ResponseEntity.notFound().build();
+
+        }
+    }
+
 }
 
-//add custom sql
-//add patch method
+
+//add log 
+//jar file
+//add swagger

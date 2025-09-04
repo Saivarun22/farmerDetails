@@ -5,10 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import Practice.farmerDetails.dto.CattleDTO;
+import Practice.farmerDetails.mapper.CattleMapper;
 import Practice.farmerDetails.model.Cattle;
 import Practice.farmerDetails.repository.CattleRepository;
 
+
 @Service
+
 public class CattleService {
 
     @Autowired
@@ -19,20 +23,21 @@ public class CattleService {
     
 
     }
-    public Cattle getCattleById(Long Id){
-        return cattleRepository.findById(Id).orElse(null);
+    public Cattle getCattleById(Long id){
+        return cattleRepository.findById(id).orElse(null);
     }
 
-    public Cattle createCattle(Cattle cattle){
+    public Cattle createCattle(CattleDTO dto){
+        Cattle cattle = CattleMapper.toEntity(dto);
         return cattleRepository.save(cattle);
     }
 
-    public Cattle updateCattle (Long Id,Cattle cattleDetails){
-        Cattle cattle = cattleRepository.findById(Id).orElse(null);
+    public Cattle updateCattle (Long id,Cattle cattleDetails){
+        Cattle cattle = cattleRepository.findById(id).orElse(null);
         if(cattle != null){
             cattle.setNoOfCows( cattleDetails.getNoOfCows());
             cattle.setNoOfBuffaloes(cattleDetails.getNoOfBuffaloes());
-            cattle.setNoOfGoats(cattleDetails.getNoOfGoats());
+            cattle.setNoOfGoates(cattleDetails.getNoOfGoates());
             cattle.setNoOfSheeps(cattleDetails.getNoOfSheeps());
             return cattleRepository.save(cattle);
         }else{
@@ -40,10 +45,44 @@ public class CattleService {
         }
     }
 
-    public void deleteCattleById(Long Id){
-        cattleRepository.deleteById(Id);
+    public void deleteCattleById(Long id){
+        cattleRepository.deleteById(id);
     }
 
+    public CattleDTO patchCattle(Long id, CattleDTO cattleDTO){
+        Cattle cattle = cattleRepository.findById(id).orElse(null);
+        if(cattle != null){
+            if(cattleDTO.getNoOfCows()!=0){
+                cattle.setNoOfCows(cattleDTO.getNoOfCows());
+
+            }
+            if(cattleDTO.getNoOfBuffaloes()!=0){
+                cattle.setNoOfBuffaloes(cattleDTO.getNoOfBuffaloes());
+
+            }
+            if(cattleDTO.getNoOfGoates()!=0){
+                cattle.setNoOfGoates(cattleDTO.getNoOfGoates());
+
+            }
+            if(cattleDTO.getNoOfSheeps()!=0){
+                cattle.setNoOfSheeps(cattleDTO.getNoOfSheeps());
+
+            }
+
+            cattleRepository.save(cattle);
+            return cattleDTO;
+            
+        }else{
+
+            return null;
+
+        }
+
+
+    }
 }
+
+
+
 
 

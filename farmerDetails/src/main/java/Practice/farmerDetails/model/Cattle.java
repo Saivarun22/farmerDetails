@@ -12,27 +12,32 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
+
+
+
 @Entity
 @Data
+
+
 public class Cattle {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long Id;
+private Long id;
 
 
-private int noOfCows = 0;
+private Integer noOfCows = 0;
 
 
-private int noOfBuffaloes = 0;
+private Integer noOfBuffaloes = 0;
 
 
-private int noOfGoats = 0;
+private Integer noOfGoates = 0;
 
 
-private int noOfSheeps = 0;
+private Integer noOfSheeps = 0;
 
 @ManyToOne
-@JoinColumn(name ="Farmer_IEID",referencedColumnName = "IEID", nullable = false)
+@JoinColumn(name ="Farmer_IEID", nullable = false)
 @JsonBackReference
 private Farmer farmer;
 }

@@ -2,7 +2,7 @@ package Practice.farmerDetails.model;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale.Category;
+import Practice.farmerDetails.model.Category;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,8 +20,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+
+
+
 @Entity
 @Data
+
 public class Farmer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +50,7 @@ public class Farmer {
     @Max(value =100,message = "age should not be more than 100")
     private int age;
     
-    @Column(unique =true)
-    private Long farmerId;
+    
     
     @NotBlank(message = "mandal is required")
     private String mandal;
@@ -60,6 +63,7 @@ public class Farmer {
     @NotNull(message = "Category is required")
     private Category category;
     
+    @NotBlank(message="mobile number should not be blank")
     @Pattern(regexp = "^[0-9]{10}$",message = "Mobile number must be 10 digits")
     private String mobileNumber;
     
@@ -72,6 +76,8 @@ public class Farmer {
 
     @OneToMany(mappedBy = "farmer",cascade = CascadeType.ALL)
     private List<Cattle> cattle;
+
+    
 
 
 

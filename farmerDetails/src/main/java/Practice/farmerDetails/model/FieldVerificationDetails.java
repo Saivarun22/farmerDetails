@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,15 +19,17 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+
+
 @Data
 @Entity
 public class FieldVerificationDetails {
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     
     @Column(nullable = false)
-    private boolean landShownForFieldVerification;
+    private Boolean landShownForFieldVerification;
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -52,6 +55,11 @@ public class FieldVerificationDetails {
     @JoinColumn(name = "Farmer_IEID",nullable =false)
     @JsonBackReference
     private Farmer farmer;
+
+    
+ 
+
+
 
 
 
