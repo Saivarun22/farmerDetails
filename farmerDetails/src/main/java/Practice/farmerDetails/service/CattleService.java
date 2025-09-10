@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import Practice.farmerDetails.dto.CattleDTO;
 import Practice.farmerDetails.mapper.CattleMapper;
 import Practice.farmerDetails.model.Cattle;
+import Practice.farmerDetails.model.Farmer;
 import Practice.farmerDetails.repository.CattleRepository;
+import Practice.farmerDetails.repository.FarmerRepository;
 
 
 @Service
@@ -17,6 +19,8 @@ public class CattleService {
 
     @Autowired
     private CattleRepository cattleRepository;
+    @Autowired
+    private FarmerRepository farmerRepository;
 
     public List<Cattle> getAllCattles(){
         return cattleRepository.findAll();
@@ -27,10 +31,22 @@ public class CattleService {
         return cattleRepository.findById(id).orElse(null);
     }
 
-    public Cattle createCattle(CattleDTO dto){
-        Cattle cattle = CattleMapper.toEntity(dto);
-        return cattleRepository.save(cattle);
+
+    public Cattle createCattle(CattleDTO dto) {
+     // Convert DTO → Entity
+     Cattle cattle = CattleMapper.toEntity(dto);
+
+     // Find Farmer using IEID from DTO
+     Farmer farmer = farmerRepository.findById(dto.getIEID())
+            .orElseThrow(() -> new RuntimeException("Farmer not found with IEID: " + dto.getIEID()));
+
+     // Set farmer into cattle
+     cattle.setFarmer(farmer);
+
+     // Save cattle
+     return cattleRepository.save(cattle);
     }
+
 
     public Cattle updateCattle (Long id,Cattle cattleDetails){
         Cattle cattle = cattleRepository.findById(id).orElse(null);
@@ -52,19 +68,19 @@ public class CattleService {
     public CattleDTO patchCattle(Long id, CattleDTO cattleDTO){
         Cattle cattle = cattleRepository.findById(id).orElse(null);
         if(cattle != null){
-            if(cattleDTO.getNoOfCows()!=0){
+            if(cattleDTO.getNoOfCows()!=null){
                 cattle.setNoOfCows(cattleDTO.getNoOfCows());
 
             }
-            if(cattleDTO.getNoOfBuffaloes()!=0){
+            if(cattleDTO.getNoOfBuffaloes()!=null){
                 cattle.setNoOfBuffaloes(cattleDTO.getNoOfBuffaloes());
 
             }
-            if(cattleDTO.getNoOfGoates()!=0){
+            if(cattleDTO.getNoOfGoates()!=null){
                 cattle.setNoOfGoates(cattleDTO.getNoOfGoates());
 
             }
-            if(cattleDTO.getNoOfSheeps()!=0){
+            if(cattleDTO.getNoOfSheeps()!=null){
                 cattle.setNoOfSheeps(cattleDTO.getNoOfSheeps());
 
             }

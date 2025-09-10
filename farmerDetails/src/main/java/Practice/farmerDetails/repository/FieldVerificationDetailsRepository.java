@@ -16,8 +16,8 @@ public interface FieldVerificationDetailsRepository extends JpaRepository<FieldV
 @Query("Select fv from FieldVerificationDetails fv")
 List<FieldVerificationDetails> getAllFieldVerificationDetails();
 
-@Query("Select fv from FieldVerificationDetails fv Where fv.id=:id")
-FieldVerificationDetails getFieldVerificationDetailsById(@Param("Id") Long id);
+@Query("SELECT fv FROM FieldVerificationDetails fv WHERE fv.id = :id")
+FieldVerificationDetails getFieldVerificationDetailsById(@Param("id") Long id);
 
 @Modifying
 @Transactional
